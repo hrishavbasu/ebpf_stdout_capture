@@ -20,7 +20,7 @@ Ensure you have the necessary dependencies installed:
 Copysudo apt-get install llvm clang linux-headers-$(uname -r)
 
 Clone the repository:
-Copygit clone https://github.com/yourusername/ebpf-stdout-capture.git
+Copygit clone https://github.com/hrishavbasu/ebpf_stdout_capture.git
 cd ebpf-stdout-capture
 
 Build the project:
