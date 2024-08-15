@@ -1,0 +1,59 @@
+eBPF Stdout Capture
+This project implements an eBPF-based tool for capturing and monitoring stdout and stderr output from processes on a Linux system. It uses eBPF to trace write system calls and displays the captured output in real-time.
+Features
+
+Captures stdout (file descriptor 1) and stderr (file descriptor 2) output from all processes
+Displays process ID, file descriptor, number of bytes written, and the actual output
+Uses eBPF for efficient, kernel-space tracing
+Implements a ring buffer for high-performance data transfer between kernel and user space
+
+Prerequisites
+
+A Linux system with eBPF support (kernel version 4.18 or later recommended)
+Rust toolchain (stable channel)
+LLVM and Clang (for compiling the eBPF program)
+Linux headers (for eBPF development)
+
+Building
+
+Ensure you have the necessary dependencies installed:
+Copysudo apt-get install llvm clang linux-headers-$(uname -r)
+
+Clone the repository:
+Copygit clone https://github.com/yourusername/ebpf-stdout-capture.git
+cd ebpf-stdout-capture
+
+Build the project:
+Copycargo build --release
+
+Usage
+Run the program with root privileges:
+Copysudo target/release/ebpf_stdout_capture
+The program will start capturing stdout and stderr output from all processes on the system. Press Ctrl+C to stop the capture and exit the program.
+Project Structure
+
+src/bpf/stdout_capture.bpf.c: eBPF program written in C
+src/main.rs: Rust user-space program that loads and manages the eBPF program
+build.rs: Build script for compiling the eBPF program and generating Rust bindings
+Cargo.toml: Rust project configuration and dependencies
+
+How it Works
+
+The eBPF program (stdout_capture.bpf.c) attaches to the sys_enter_write tracepoint.
+When a process calls write(), the eBPF program captures the data if it's being written to stdout or stderr.
+The captured data is sent to user-space through a ring buffer.
+The Rust program (main.rs) receives the data from the ring buffer and prints it to the console.
+
+Limitations
+
+The current implementation captures a maximum of 64 bytes per write operation.
+The tool requires root privileges to load and run the eBPF program.
+
+Contributing
+Contributions are welcome! Please feel free to submit a Pull Request.
+License
+This project is licensed under the GPL License - see the LICENSE file for details.
+Acknowledgments
+
+This project uses the libbpf-rs and libbpf-cargo crates for eBPF support in Rust.
+Inspired by various eBPF learning resources and projects in the Linux tracing community.
